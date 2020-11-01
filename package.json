@@ -1,5 +1,5 @@
 {
-  "name": "hide-code-lab",
+  "name": "hide-code",
   "version": "0.1.0",
   "description": "is a Jupyter notebook extension to selectively hide code, prompts and outputs with PDF and HTML exporting support.",
   "keywords": [
@@ -7,9 +7,9 @@
     "jupyterlab",
     "jupyterlab-extension"
   ],
-  "homepage": "https://github.com/kirbs-/hide_code_lab",
+  "homepage": "https://github.com/kirbs-/hide_code",
   "bugs": {
-    "url": "https://github.com/kirbs-/hide_code_lab/issues"
+    "url": "https://github.com/kirbs-/hide_code/issues"
   },
   "license": "BSD-3-Clause",
   "author": "Chris Kirby",

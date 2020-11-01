@@ -1,15 +1,14 @@
+/* eslint-disable prettier/prettier */
 import { IDisposable, DisposableDelegate } from '@lumino/disposable';
 
 import {
   JupyterFrontEnd,
   JupyterFrontEndPlugin
-//   ILayoutRestorer
 } from '@jupyterlab/application';
 
 import { 
-    ToolbarButton, 
-    ICommandPalette
-    // WidgetTracker 
+  ToolbarButton,
+  ICommandPalette
 } from '@jupyterlab/apputils';
 
 import { DocumentRegistry } from '@jupyterlab/docregistry';
@@ -20,17 +19,12 @@ import {
   INotebookTracker
 } from '@jupyterlab/notebook';
 
-import {
-    CodeCell
-    // Cell
-} from '@jupyterlab/cells';
+import { CodeCell } from '@jupyterlab/cells';
 
 import {
-    Widget,
-    PanelLayout
+  Widget,
+  PanelLayout
 } from '@lumino/widgets';
-
-// import { PanelLayout } from '@lumino/widgets';
 
 // import '../style/index.css';
 
@@ -44,7 +38,6 @@ const plugin: JupyterFrontEndPlugin<void> = {
 export class HideCodeLabExtension
   implements DocumentRegistry.IWidgetExtension<NotebookPanel, INotebookModel> {
 
-    // _panel: NotebookPanel;
     tracker: INotebookTracker;
 
     constructor(tracker: INotebookTracker){
@@ -55,13 +48,11 @@ export class HideCodeLabExtension
     panel: NotebookPanel,
     context: DocumentRegistry.IContext<INotebookModel>
   ): IDisposable {
-    // this.tracker.currentChanged.connect(() => { console.log('changed'); this.open() });
-    // this.tracker.widgetAdded.connect(() => {console.log('widget added'); this.open() });
-    // this._panel = panel;
 
     const toggleInput = () => {      
       panel.content.widgets.filter(cell => panel.content.isSelectedOrActive(cell)).forEach(cell => {
         if (cell.model.type === 'code') {
+
             if (cell.inputArea.isHidden) {
                 cell.inputArea.show()
                 cell.model.metadata.set('hideInput', false);
@@ -69,6 +60,7 @@ export class HideCodeLabExtension
                 cell.inputArea.hide()
                 cell.model.metadata.set('hideInput', true);
             };
+
           }
       });
     };
@@ -76,17 +68,18 @@ export class HideCodeLabExtension
     const toggleOutput = () => {      
         panel.content.widgets.filter(cell => panel.content.isSelectedOrActive(cell)).forEach(cell => {
           if (cell.model.type === 'code') {
-              const codeCell = cell as CodeCell;
-              if (codeCell.outputArea.isHidden) {
-                  codeCell.outputArea.show()
-                  codeCell.model.metadata.set('hideOutput', false);
-              } else {
-                codeCell.outputArea.hide()
-                codeCell.model.metadata.set('hideOutput', true);
-              };
-            }
+            const codeCell = cell as CodeCell;
+
+            if (codeCell.outputArea.isHidden) {
+              codeCell.outputArea.show()
+              codeCell.model.metadata.set('hideOutput', false);
+            } else {
+            codeCell.outputArea.hide()
+            codeCell.model.metadata.set('hideOutput', true);
+            };
+
+          }
         });
-  
       };
 
       const togglePrompts = () => {      
@@ -95,19 +88,17 @@ export class HideCodeLabExtension
             const codeCell = cell as CodeCell;
             let prompt = codeCell.outputArea.widgets[0] as Widget;
             let l = prompt.layout as PanelLayout;
+
             if (l.widgets[0].node.classList.contains('hidden')) {
-                l.widgets[0].node.classList.remove('hidden');
-                cell.model.metadata.set('hidePrompt', false);
+              l.widgets[0].node.classList.remove('hidden');
+              cell.model.metadata.set('hidePrompt', false);
             } else {
-                l.widgets[0].node.classList.add('hidden');
-                cell.model.metadata.set('hidePrompt', true);
+              l.widgets[0].node.classList.add('hidden');
+              cell.model.metadata.set('hidePrompt', true);
             }
-            // l.widgets[0].node.classList.toggle('hidden');
-            // cell.promptNode.classList.toggle('hidden');
-            
-            }
+
+          }
         });
-  
       };
 
     const hideInputButton = new ToolbarButton({
@@ -125,11 +116,11 @@ export class HideCodeLabExtension
     });
 
     const hideOPromptsButton = new ToolbarButton({
-        className: 'hcButton',
-        iconClass: 'fa fa-sm fc-output fontawesome-colors',
-        onClick: togglePrompts,
-        tooltip: 'Show Prompts'
-      });
+      className: 'hcButton',
+      iconClass: 'fa fa-sm fc-output fontawesome-colors',
+      onClick: togglePrompts,
+      tooltip: 'Show Prompts'
+    });
 
     panel.toolbar.insertItem(11, 'hideInput', hideInputButton);
     panel.toolbar.insertItem(12, 'hideOutput', hideOutputButton);
@@ -137,24 +128,24 @@ export class HideCodeLabExtension
     console.log('Hide code JupyterLab extension is activated!');
 
     return new DisposableDelegate(() => {
-        hideInputButton.dispose();
-        hideOutputButton.dispose();
-        hideOPromptsButton.dispose();
+      hideInputButton.dispose();
+      hideOutputButton.dispose();
+      hideOPromptsButton.dispose();
     });
   };
 
   setInput(cell: any): void {
     if (cell.model.metadata.get('hideInput')) {
-        cell.inputArea.hide()
+      cell.inputArea.hide()
     } else {
-        cell.inputArea.show()
+      cell.inputArea.show()
     };
   };
 
   setOutput(cell: any): void {
     const codeCell = cell as CodeCell;
     if (codeCell.model.metadata.get('hideOutput')) {
-        codeCell.outputArea.hide();
+      codeCell.outputArea.hide();
     } else {
       codeCell.outputArea.show();
     };
@@ -163,24 +154,24 @@ export class HideCodeLabExtension
   setPrompt(cell: any): void {
     const codeCell = cell as CodeCell;
     let prompt = codeCell.outputArea.widgets[0] as Widget;
-    if (prompt != undefined){
+    if (prompt !== undefined){
       let l = prompt.layout as PanelLayout;
       if (codeCell.model.metadata.get('hidePrompt')) {
-          l.widgets[0].node.classList.add('hidden');
+        l.widgets[0].node.classList.add('hidden');
       } else {
-          l.widgets[0].node.classList.remove('hidden');
+        l.widgets[0].node.classList.remove('hidden');
       };
     }
   };
 
   open(): void {
-      this.tracker.forEach(notebook => {
-        notebook.content.widgets.forEach(cell => {
-          this.setInput(cell);
-          this.setOutput(cell);
-          this.setPrompt(cell);
-        });
+    this.tracker.forEach(notebook => {
+      notebook.content.widgets.forEach(cell => {
+        this.setInput(cell);
+        this.setOutput(cell);
+        this.setPrompt(cell);
       });
+    });
   };
 }
 
