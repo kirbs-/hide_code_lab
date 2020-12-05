@@ -25,6 +25,7 @@ lab_path = os.path.join(HERE, name, "labextension")
 # Representative files that should exist after a successful build
 jstargets = [
     os.path.join(HERE, "lib", "hidecodelab.js"),
+    os.path.join(HERE, "lib", "index.js"),
 ]
 
 package_data_spec = {
@@ -73,8 +74,6 @@ setup_args = dict(
     classifiers=[
         "License :: OSI Approved :: BSD License",
         "Programming Language :: Python",
-        "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.5",
         "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",

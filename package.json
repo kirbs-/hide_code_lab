@@ -1,6 +1,6 @@
 {
-  "name": "@kirbs/hide_code",
-  "version": "1.0.1",
+  "name": "hide_code",
+  "version": "1.0.4",
   "description": "Jupyter notebook extension to selectively hide code, prompts and outputs with PDF and HTML exporting support.",
   "keywords": [
     "jupyter",
